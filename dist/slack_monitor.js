@@ -11,6 +11,9 @@ const responder_1 = require("./responder");
 let app;
 let monitoringChannelId;
 let botUserId;
+function isEmptySystemEvent(message) {
+    return !message.user && !message.bot_id && !message.subtype && !(message.text || "").trim() && !(message.files?.length);
+}
 function isBotMentioned(text) {
     return botUserId ? text.includes(`<@${botUserId}>`) : false;
 }
@@ -46,6 +49,9 @@ async function startMonitor(channelId) {
     console.log(`[slack_monitor] 채널 ${channelId} 모니터링 시작`);
 }
 async function handleMessage(message) {
+    if (isEmptySystemEvent(message)) {
+        return;
+    }
     console.log(`[slack_monitor] 메시지 수신 - channel: ${message.channel}, user: ${message.user}, ts: ${message.ts}, thread_ts: ${message.thread_ts || "없음"}, text: "${(message.text || "").slice(0, 80)}", files: ${message.files?.length || 0}개`);
     if (message.bot_id || message.subtype === "bot_message" || !message.user || message.subtype === "message_changed") {
         console.log("[slack_monitor] 봇/시스템 메시지 → 무시");

@@ -46,6 +46,7 @@ npx slack_code_plan start C0123456789 --pm2
 - npm
 - `--pm2` 옵션 사용 시 `pm2`
 - `claude` CLI가 PATH에 설치되어 있어야 함
+- PM2로 실행할 경우, 같은 실행 환경에서 `claude` CLI 인증 또는 API 키 설정이 유효해야 함
 - Slack App Bot Token (`xoxb-...`)
 - Slack App Token (`xapp-...`, Socket Mode)
 

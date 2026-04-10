@@ -10,6 +10,10 @@ let app: App;
 let monitoringChannelId: string;
 let botUserId: string;
 
+function isEmptySystemEvent(message: any): boolean {
+  return !message.user && !message.bot_id && !message.subtype && !(message.text || "").trim() && !(message.files?.length);
+}
+
 function isBotMentioned(text: string): boolean {
   return botUserId ? text.includes(`<@${botUserId}>`) : false;
 }
@@ -50,6 +54,10 @@ export async function startMonitor(channelId: string): Promise<void> {
 }
 
 async function handleMessage(message: any): Promise<void> {
+  if (isEmptySystemEvent(message)) {
+    return;
+  }
+
   console.log(`[slack_monitor] 메시지 수신 - channel: ${message.channel}, user: ${message.user}, ts: ${message.ts}, thread_ts: ${message.thread_ts || "없음"}, text: "${(message.text || "").slice(0, 80)}", files: ${message.files?.length || 0}개`);
 
   if (message.bot_id || message.subtype === "bot_message" || !message.user || message.subtype === "message_changed") {
