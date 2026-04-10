@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO="https://oss.navercorp.com/zump/slack_code_plan.git"
+REPO="https://github.com/wooyaggo/slack_code_plan.git"
 INSTALL_DIR="${HOME}/.slack_code_plan/app"
 BIN_LINK="/usr/local/bin/slack_code_plan"
 
