@@ -7,12 +7,12 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
     "start": "node dist/bin.js",
     "dev": "npx tsx src/bin.ts"
   },
   "files": [
-    "dist",
-    "install.sh"
+    "dist"
   ],
   "dependencies": {
     "@slack/bolt": "^4.1.0",
