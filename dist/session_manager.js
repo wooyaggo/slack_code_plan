@@ -12,13 +12,7 @@ const config_1 = require("./config");
 const cli_1 = require("./cli");
 const sessions = new Map();
 function buildPrompt(message, attachments) {
-    const sections = [
-        "다음은 Slack에서 들어온 QA 요청입니다.",
-        "",
-        "[QA 메시지]",
-        message.trim() || "(메시지 없음)",
-        "[/QA 메시지]",
-    ];
+    const sections = ["다음은 Slack에서 들어온 QA 요청입니다.", "", "[QA 메시지]", message.trim() || "(메시지 없음)", "[/QA 메시지]"];
     if (attachments.length === 0) {
         return sections.join("\n");
     }
@@ -37,18 +31,7 @@ async function createSession(threadTs, channel, message, attachments) {
     await (0, cli_1.runCommand)("git", ["pull"], (0, config_1.getConfig)().project.root);
     const sessionId = crypto_1.default.randomUUID();
     const prompt = buildPrompt(message, attachments);
-    const result = await (0, cli_1.runClaude)([
-        "-p",
-        "--model",
-        (0, config_1.getConfig)().session.model,
-        "--output-format",
-        "json",
-        "--session-id",
-        sessionId,
-        "--system-prompt",
-        "이 QA 요청을 분석하고 실행 가능한 플랜을 짜라. 한국어로 답변. 정보가 부족할 시 최근 작업 기록을 참고하고 작업 계획 이외에는 어떤 메세지도 출력하지 않는다. (단, 메세지는 Slack 에서 잘 보여지도록 포맷을 갖춘다.)",
-        prompt,
-    ]);
+    const result = await (0, cli_1.runClaude)(["-p", "--model", (0, config_1.getConfig)().session.model, "--output-format", "json", "--session-id", sessionId, "--system-prompt", "이 QA 요청을 분석하고 실행 가능한 플랜을 짜라. 한국어로 답변. 정보가 부족할 시 최근 작업 기록을 참고하고 작업 계획 이외에는 어떤 메세지도 출력하지 않는다. (단, 메세지는 Slack 에서 잘 보여지도록 포맷을 갖춘다.) - 항상 존댓말 사용.", prompt]);
     sessions.set(threadTs, {
         session_id: sessionId,
         thread_ts: threadTs,
@@ -67,16 +50,7 @@ async function continueSession(threadTs, message, attachments) {
         throw new Error(`Session is closed for thread ${threadTs}`);
     }
     const prompt = buildPrompt(message, attachments);
-    const result = await (0, cli_1.runClaude)([
-        "-p",
-        "--resume",
-        session.session_id,
-        "--model",
-        (0, config_1.getConfig)().session.model,
-        "--output-format",
-        "json",
-        prompt,
-    ]);
+    const result = await (0, cli_1.runClaude)(["-p", "--resume", session.session_id, "--model", (0, config_1.getConfig)().session.model, "--output-format", "json", prompt]);
     session.status = "active";
     return result;
 }
