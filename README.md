@@ -2,6 +2,26 @@
 
 Slack 채널을 모니터링하면서 개발 작업이 필요한 메시지를 감지하고, Claude CLI를 이용해 코드베이스 기준의 작업 계획을 자동으로 생성해 스레드에 응답하는 CLI 도구입니다.
 
+## 사용법
+
+도움말:
+
+```bash
+slack_code_plan --help
+```
+
+채널 모니터링 시작:
+
+```bash
+slack_code_plan start <CHANNEL_ID>
+```
+
+예시:
+
+```bash
+slack_code_plan start C0123456789
+```
+
 ## 개요
 
 이 프로젝트는 다음 흐름으로 동작합니다.
@@ -77,26 +97,6 @@ slack_code_plan init
 - `SLACK_BOT_TOKEN`
 - `SLACK_APP_TOKEN`
 - `SLACK_BOT_USER_ID` (선택)
-
-## 사용법
-
-도움말:
-
-```bash
-slack_code_plan --help
-```
-
-채널 모니터링 시작:
-
-```bash
-slack_code_plan start <CHANNEL_ID>
-```
-
-예시:
-
-```bash
-slack_code_plan start C0123456789
-```
 
 ## 동작 방식
 

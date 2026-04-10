@@ -22,9 +22,6 @@
     "typescript": "^5.5.0",
     "@types/node": "^20.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://oss.navercorp.com/zump/slack_code_plan.git"
-  },
+  "repository": "https://oss.navercorp.com/zump/slack_code_plan.git",
   "license": "UNLICENSED"
 }
