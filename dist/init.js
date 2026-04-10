@@ -39,6 +39,42 @@ const path = __importStar(require("path"));
 const readline = __importStar(require("readline"));
 const CONFIG_DIR = path.join(process.env.HOME || "~", ".slack_code_plan");
 const ENV_PATH = path.join(CONFIG_DIR, ".env");
+const CLAUDE_ALLOWED_TOOLS = [
+    "Read",
+    "LS",
+    "Glob",
+    "Grep",
+    "Edit",
+    "MultiEdit",
+    "Write",
+    "Bash(git status:*)",
+    "Bash(git diff:*)",
+    "Bash(git add:*)",
+    "Bash(git commit:*)",
+    "Bash(git push:*)",
+];
+function ensureClaudeSettings(projectRoot) {
+    const claudeSettingsDir = path.join(projectRoot, ".claude");
+    const claudeSettingsPath = path.join(claudeSettingsDir, "settings.json");
+    fs.mkdirSync(claudeSettingsDir, { recursive: true });
+    let settings = {};
+    if (fs.existsSync(claudeSettingsPath)) {
+        try {
+            settings = JSON.parse(fs.readFileSync(claudeSettingsPath, "utf8"));
+        }
+        catch (error) {
+            throw new Error(`.claude/settings.json 파싱 실패: ${error instanceof Error ? error.message : String(error)}`);
+        }
+    }
+    const permissions = settings.permissions && typeof settings.permissions === "object"
+        ? { ...settings.permissions }
+        : {};
+    const existingAllow = Array.isArray(permissions.allow) ? permissions.allow : [];
+    permissions.allow = Array.from(new Set([...existingAllow, ...CLAUDE_ALLOWED_TOOLS]));
+    settings.permissions = permissions;
+    fs.writeFileSync(claudeSettingsPath, JSON.stringify(settings, null, 2) + "\n");
+    console.log(`Claude Code 권한 설정 저장 완료: ${path.join(projectRoot, ".claude/settings.json")}`);
+}
 function ask(rl, question) {
     return new Promise((resolve) => {
         rl.question(question, (answer) => resolve(answer.trim()));
@@ -80,4 +116,5 @@ async function init() {
         .join("\n");
     fs.writeFileSync(ENV_PATH, envContent + "\n");
     console.log(`\n설정 저장 완료: ${ENV_PATH}`);
+    ensureClaudeSettings(process.cwd());
 }

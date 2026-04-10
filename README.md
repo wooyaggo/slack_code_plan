@@ -16,6 +16,8 @@ npm install github:wooyaggo/slack_code_plan
 npx slack_code_plan init
 ```
 
+`init`를 실행하면 Slack 토큰 설정과 함께 현재 프로젝트 루트에 `.claude/settings.json`도 생성/갱신됩니다.
+
 pm2로 백그라운드 실행:
 
 ```bash
@@ -111,6 +113,12 @@ slack_code_plan init
 ```
 
 설정은 `~/.slack_code_plan/.env`에 저장됩니다.
+
+또한 현재 프로젝트 루트의 `.claude/settings.json`에 Claude Code 권한 설정을 자동으로 추가합니다.
+기본 허용 항목:
+
+- 코드 수정용: `Read`, `LS`, `Glob`, `Grep`, `Edit`, `MultiEdit`, `Write`
+- Git 명령: `git status`, `git diff`, `git add`, `git commit`, `git push`
 
 저장되는 값:
 
