@@ -1,0 +1,30 @@
+{
+  "name": "slack_code_plan",
+  "version": "0.1.0",
+  "description": "Slack 채널 모니터링 → QA 감지 → Claude Code 자동 플랜 수립",
+  "bin": {
+    "slack_code_plan": "./dist/bin.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/bin.js",
+    "dev": "npx tsx src/bin.ts"
+  },
+  "files": [
+    "dist",
+    "install.sh"
+  ],
+  "dependencies": {
+    "@slack/bolt": "^4.1.0",
+    "@slack/web-api": "^7.8.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://oss.navercorp.com/zump/slack_code_plan.git"
+  },
+  "license": "UNLICENSED"
+}
