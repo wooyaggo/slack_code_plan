@@ -7,7 +7,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build",
     "start": "node dist/bin.js",
     "dev": "npx tsx src/bin.ts"
   },
