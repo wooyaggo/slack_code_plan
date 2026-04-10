@@ -94,6 +94,7 @@ async function initSession() {
         return classifierSessionId;
     classifierSessionId = crypto_1.default.randomUUID();
     const systemPrompt = await buildSystemPrompt();
+    console.log(`[classifier] 분류 세션 초기화 시작 (session: ${classifierSessionId}, promptLength: ${systemPrompt.length})`);
     // 첫 호출: --session-id로 새 세션 생성
     await (0, cli_1.runCommand)("claude", [
         "-p",
@@ -113,11 +114,13 @@ async function initSession() {
 }
 async function classifyMessage(text, attachmentNames) {
     let userContent = text;
+    console.log(`[classifier] classifyMessage 시작 (textLength: ${text.length}, attachments: ${attachmentNames?.join(", ") || "없음"})`);
     if (attachmentNames && attachmentNames.length > 0) {
         userContent += `\n\n[첨부파일: ${attachmentNames.join(", ")}]`;
     }
     try {
         const sessionId = await initSession();
+        console.log(`[classifier] 분류 세션 사용 (session: ${sessionId}, userContentLength: ${userContent.length})`);
         // --resume으로 기존 세션 이어가기
         const raw = await (0, cli_1.runCommand)("claude", [
             "-p",
